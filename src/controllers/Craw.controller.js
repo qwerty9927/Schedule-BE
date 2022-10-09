@@ -4,7 +4,6 @@ const CrawModel = require('../models/Craw.model')
 
 class Craw {
   async receiveData(req, res, next) {
-    console.log(req.body.values)
     const data = JSON.parse(req.body.values)
     const { code, schoolYear, school } = req.query
     if (code && schoolYear && school && data) {

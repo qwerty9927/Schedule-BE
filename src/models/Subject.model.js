@@ -18,6 +18,7 @@ class SubjectModel {
   }
 
   async searchSubject(searchInfo, docInfo) {
+    searchInfo.searchValue = searchInfo.searchValue.toLowerCase()
     const subName = `${docInfo.school}_${docInfo.schoolYear}`
     const Model = createModel(docInfo.school.toLowerCase(), Schema.subjectSchema)
     const result = await Model.find(
