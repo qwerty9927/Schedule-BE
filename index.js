@@ -11,7 +11,7 @@ global.__basedir = __dirname
 
 app.use(helmet())
 app.use(cors({
-  origin: ['https://qwerty9927.github.io/', 'http://thongtindaotao.sgu.edu.vn/']
+  origin: process.env.HOSTACCESS_1
 }))
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
