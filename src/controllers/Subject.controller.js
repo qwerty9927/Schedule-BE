@@ -3,6 +3,10 @@ const SubjectModel = require('../models/Subject.model')
 class Subject {
 
   async getInfoCourse(req, res, next) {
+<<<<<<< HEAD
+=======
+    const { school } = req.query
+>>>>>>> 62219c2 (update)
     try {
       const result = await SubjectModel.getInfoCourse()
       res.status(200).json({
