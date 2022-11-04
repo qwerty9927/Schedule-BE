@@ -1,11 +1,9 @@
 const express = require('express')
 const helmet = require("helmet");
 const cors = require('cors')
-const morgan = require(morgan)
 const mongoose = require('mongoose')
 const routerCraw = require('./src/routes/craw.route')
-const routerSubject = require('./src/routes/subject.route');
-const morgan = require('morgan');
+const routerSubject = require('./src/routes/subject.route')
 require('dotenv').config()
 
 const app = express()
