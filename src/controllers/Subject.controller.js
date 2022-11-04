@@ -5,7 +5,6 @@ class Subject {
 
   async getInfoCourse(req, res, next) {
     const { school } = req.query
-    console.log(school)
     try {
       const result = await SubjectModel.getInfoCourse((school || "").toLowerCase())
       res.status(200).json({
