@@ -27,8 +27,8 @@ class Subject {
   }
 
   async searchSubject(req, res, next) {
-    const {searchValue, schoolYear, majors} = req.body
-    if (searchValue && schoolYear && majors) {
+    const {searchValue, schoolYear} = req.body
+    if (searchValue && schoolYear) {
       try {
         const result = await SubjectModel.searchSubject({ searchValue }, { schoolYear, majors })
         res.status(200).json({
