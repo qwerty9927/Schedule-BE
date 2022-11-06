@@ -3,6 +3,7 @@ const fs = require('fs')
 const Schema = require('./Schema.model')
 const createModel = require('../services/createModel.service')
 const createError = require('http-errors')
+const { removeAccents } = require('../utils/convert')
 
 require('../utils/dbTool')
 require('dotenv').config()
@@ -20,6 +21,7 @@ class SubjectModel {
   async searchSubject(searchInfo, docInfo) {
     searchInfo.searchValue = searchInfo.searchValue.toLowerCase()
     const subName = `${docInfo.school}_${docInfo.schoolYear}`
+    const remakeSearchValue = removeAccents(searchInfo.searchValue)
     const Model = createModel(docInfo.school.toLowerCase(), Schema.subjectSchema)
     const result = await Model.find(
       {
@@ -29,7 +31,7 @@ class SubjectModel {
             "Subject.MaMH": searchInfo.searchValue
           },
           {
-            "Subject.TenMH": { $regex: `^${searchInfo.searchValue}`, $options: 'i' }
+            "Subject.TenMHUnsign": { $regex: `${remakeSearchValue}`, $options: 'i' }
           }
         ]
       })
@@ -39,7 +41,7 @@ class SubjectModel {
         newArray.push(...result[i].Subject)
       }
       newArray = newArray.filter(item => {
-        if(item.TenMH.toLowerCase().startsWith(searchInfo.searchValue) || item.MaMH === searchInfo.searchValue){
+        if(item.TenMHUnsign.includes(remakeSearchValue) || item.MaMH === searchInfo.searchValue){
           return true
         }
       })

@@ -1,6 +1,5 @@
 const createError = require('http-errors')
 const SubjectModel = require('../models/Subject.model')
-
 class Subject {
 
   async getInfoCourse(req, res, next) {
@@ -17,7 +16,7 @@ class Subject {
   }
 
   async searchSubject(req, res, next) {
-    const { searchValue, school, schoolYear } = req.query
+    const {searchValue, school, schoolYear} = req.body
     if (searchValue && school && schoolYear) {
       try {
         const result = await SubjectModel.searchSubject({ searchValue }, { school, schoolYear })
@@ -34,5 +33,6 @@ class Subject {
     }
   }
 }
+
 
 module.exports = new Subject()

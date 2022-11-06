@@ -27,7 +27,6 @@ app.use((req, res, next) => {
 	})
 })
 app.use((err, req, res, next) => {
-	console.log(err)
 	res.status(err.status || 500).json({
 		status: err.status || 500,
 		meg: err.message

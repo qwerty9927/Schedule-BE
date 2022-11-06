@@ -22,7 +22,8 @@ const subjectSchema = new Schema({
       Phong: Array,
       GiangVien: Array,
       Tuan: Array,
-      CS: Array
+      CS: Array,
+      TenMHUnsign: String
     }
   ],
 })

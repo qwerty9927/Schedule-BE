@@ -1,5 +1,5 @@
 const createError = require('http-errors')
-const {convertDayToNumber, convertStringToNumber, createCodeCS} = require('../utils/convert')
+const {convertDayToNumber, convertStringToNumber, createCodeCS, removeAccents} = require('../utils/convert')
 const CrawModel = require('../models/Craw.model')
 
 class Craw {
@@ -25,7 +25,8 @@ class Craw {
           Phong: item[14],
           GiangVien: item[15],
           Tuan: item[16],
-          CS: createCodeCS(item[14])
+          CS: createCodeCS(item[14]),
+          TenMHUnsign: removeAccents(item[2])
         }
       })
       try {
