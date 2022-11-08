@@ -40,6 +40,7 @@ class SubjectModel {
       for(let i = 0;i < result.length;i++){
         newArray.push(...result[i].Subject)
       }
+
       newArray = newArray.filter(item => {
         if(item.TenMHUnsign.includes(remakeSearchValue) || item.MaMH === searchInfo.searchValue){
           return true
