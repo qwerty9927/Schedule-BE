@@ -10,7 +10,9 @@ const app = express()
 global.__basedir = __dirname
 
 app.use(helmet())
-
+app.use(cors({
+  origin: [process.env.HOSTACCESS_1, process.env.HOSTACCESS_2]
+}))
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 app.get('/', (req, res) => {
