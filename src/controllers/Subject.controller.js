@@ -3,9 +3,8 @@ const SubjectModel = require('../models/Subject.model')
 class Subject {
 
   async getInfoCourse(req, res, next) {
-    const { school } = req.query
     try {
-      const result = await SubjectModel.getInfoCourse((school || "").toLowerCase())
+      const result = await SubjectModel.getInfoCourse()
       res.status(200).json({
         status: 200,
         result
@@ -16,10 +15,10 @@ class Subject {
   }
 
   async searchSubject(req, res, next) {
-    const {searchValue, school, schoolYear} = req.body
-    if (searchValue && school && schoolYear) {
+    const {searchValue, schoolYear} = req.body
+    if (searchValue && schoolYear) {
       try {
-        const result = await SubjectModel.searchSubject({ searchValue }, { school, schoolYear })
+        const result = await SubjectModel.searchSubject({ searchValue }, { schoolYear })
         res.status(200).json({
           status: 200,
           result

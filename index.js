@@ -11,7 +11,7 @@ global.__basedir = __dirname
 
 app.use(helmet())
 app.use(cors({
-  origin: [process.env.HOSTACCESS_1, process.env.HOSTACCESS_2, "http://localhost:3000"]
+  origin: [process.env.HOSTACCESS_1, process.env.HOSTACCESS_2, "http://localhost:3000", "http://192.168.0.107:3000"]
 }))
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())

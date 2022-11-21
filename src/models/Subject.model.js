@@ -8,10 +8,10 @@ const { removeAccents } = require('../utils/convert')
 require('../utils/dbTool')
 require('dotenv').config()
 class SubjectModel {
-  async getInfoCourse(school) {
+  async getInfoCourse() {
     try {
       const Model = createModel(process.env.INFOCOURSE, Schema.infoCourse)
-      const result = school ? (await Model.findOne({ School: school })).Semester : (await Model.find({})).map(item => item.School)
+      const result = (await Model.find({})).map(item => item.Semester)
       return result
     } catch (err) {
       throw err
@@ -20,33 +20,21 @@ class SubjectModel {
 
   async searchSubject(searchInfo, docInfo) {
     searchInfo.searchValue = searchInfo.searchValue.toLowerCase()
-    const subName = `${docInfo.school}_${docInfo.schoolYear}`
     const remakeSearchValue = removeAccents(searchInfo.searchValue)
-    const Model = createModel(docInfo.school.toLowerCase(), Schema.subjectSchema)
+    const Model = createModel(docInfo.schoolYear.toLowerCase(), Schema.subjectSchema)
     const result = await Model.find(
       {
-        "Name": { $regex: subName, $options: 'i' },
         $or: [
           {
-            "Subject.MaMH": searchInfo.searchValue
+            MaMH: searchInfo.searchValue
           },
           {
-            "Subject.TenMHUnsign": { $regex: `${remakeSearchValue}`, $options: 'i' }
+            TenMHUnsign: { $regex: `${remakeSearchValue}`, $options: 'i' }
           }
         ]
       })
     if(result.length){
-      let newArray = []
-      for(let i = 0;i < result.length;i++){
-        newArray.push(...result[i].Subject)
-      }
-
-      newArray = newArray.filter(item => {
-        if(item.TenMHUnsign.includes(remakeSearchValue) || item.MaMH === searchInfo.searchValue){
-          return true
-        }
-      })
-      return newArray
+      return result
     } else {
       throw createError.NotFound()
     }

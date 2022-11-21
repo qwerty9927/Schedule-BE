@@ -1,5 +1,5 @@
 const express = require('express')
-const rateLimit = require('express-rate-limit')
+// const rateLimit = require('express-rate-limit')
 const Subject = require('../controllers/Subject.controller')
 const router = express.Router()
 // const apiLimiter = rateLimit({
