@@ -17,7 +17,7 @@ class CrawModel {
   async createInfoMajors(info){
     const Model = createModel(process.env.INFOMAJORS, Schema.infoMajors)
     const result = await Model.find({ Majors: info.majors })
-    if (!result.length) {
+    if (!result.length && info.majors !== process.env.MCMAJORS) {
       try {
         await Model.create({Majors: info.majors})
       } catch(err){
