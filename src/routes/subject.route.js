@@ -13,5 +13,8 @@ router.post('/search', Subject.searchSubject)
 // Get info course
 router.get('/course', Subject.getInfoCourse)
 
+// Get info majors
+router.get('/majors', Subject.getInfoMajors)
+
 
 module.exports = router

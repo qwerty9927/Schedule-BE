@@ -27,4 +27,8 @@ const infoCourse = new Schema({
   Semester: String
 })
 
-module.exports = { subjectSchema, infoCourse }
+const infoMajors = new Schema({
+  Majors: String
+})
+
+module.exports = { subjectSchema, infoCourse, infoMajors }

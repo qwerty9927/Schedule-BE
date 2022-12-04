@@ -5,7 +5,7 @@ const CrawModel = require('../models/Craw.model')
 class Craw {
   async receiveData(req, res, next) {
     const data = JSON.parse(req.body.values)
-    const { schoolYear } = req.query
+    const { schoolYear, majors } = req.query
     if (schoolYear && data) {
       const obj = data.map((item, index) => {
         return {
@@ -30,8 +30,9 @@ class Craw {
         }
       })
       try {
-        CrawModel.receiveData(obj, { schoolYear })
+        CrawModel.receiveData(obj, { schoolYear, majors })
         await CrawModel.createInfoCourse({ schoolYear })
+        await CrawModel.createInfoMajors({ majors })
         res.sendStatus(200)
       } catch (e) {
         next(createError.InternalServerError())

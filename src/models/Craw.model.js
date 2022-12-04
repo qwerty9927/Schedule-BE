@@ -14,9 +14,22 @@ class CrawModel {
     }
   }
 
+  async createInfoMajors(info){
+    const Model = createModel(process.env.INFOMAJORS, Schema.infoMajors)
+    const result = await Model.find({ Majors: info.majors })
+    if (!result.length) {
+      try {
+        await Model.create({Majors: info.majors})
+      } catch(err){
+        throw err
+      }
+    }
+  }
+
   receiveData(data, collInfo) {
     try {
-      const Model = createModel(collInfo.schoolYear.toLowerCase(), Schema.subjectSchema)
+      const collName = collInfo.schoolYear.toLowerCase() + "_" + collInfo.majors.toLowerCase()
+      const Model = createModel(collName, Schema.subjectSchema)
       Model.insertMany(data, function(e) {
         console.log("Error insert: ", e);
       })

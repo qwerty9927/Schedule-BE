@@ -18,11 +18,24 @@ class SubjectModel {
     }
   }
 
+  async getInfoMajors() {
+    try {
+      const Model = createModel(process.env.INFOMAJORS, Schema.infoMajors)
+      const result = (await Model.find({})).map(item => item.Majors)
+      return result
+    } catch (err) {
+      throw err
+    }
+  }
+
   async searchSubject(searchInfo, docInfo) {
     searchInfo.searchValue = searchInfo.searchValue.toLowerCase()
+    const collNameRoot = docInfo.schoolYear.toLowerCase() + "_" + "monchung"
+    const collNameMajors = docInfo.schoolYear.toLowerCase() + "_" + docInfo.majors.toLowerCase()
     const remakeSearchValue = removeAccents(searchInfo.searchValue)
-    const Model = createModel(docInfo.schoolYear.toLowerCase(), Schema.subjectSchema)
-    const result = await Model.find(
+    const ModelRoot = createModel(collNameRoot, Schema.subjectSchema)
+    const ModelMajors = createModel(collNameMajors, Schema.subjectSchema)
+    const resultRoot = await ModelRoot.find(
       {
         $or: [
           {
@@ -32,7 +45,21 @@ class SubjectModel {
             TenMHUnsign: { $regex: `${remakeSearchValue}`, $options: 'i' }
           }
         ]
-      })
+      }
+    )
+    const resultMajors = await ModelMajors.find(
+      {
+        $or: [
+          {
+            MaMH: searchInfo.searchValue
+          },
+          {
+            TenMHUnsign: { $regex: `${remakeSearchValue}`, $options: 'i' }
+          }
+        ]
+      }
+    )
+    const result = [...resultMajors, ...resultRoot]
     if(result.length){
       return result
     } else {

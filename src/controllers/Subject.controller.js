@@ -14,11 +14,23 @@ class Subject {
     }
   }
 
+  async getInfoMajors(req, res, next) {
+    try {
+      const result = await SubjectModel.getInfoMajors()
+      res.status(200).json({
+        status: 200,
+        result
+      })
+    } catch (err) {
+      next(err)
+    }
+  }
+
   async searchSubject(req, res, next) {
-    const {searchValue, schoolYear} = req.body
-    if (searchValue && schoolYear) {
+    const {searchValue, schoolYear, majors} = req.body
+    if (searchValue && schoolYear && majors) {
       try {
-        const result = await SubjectModel.searchSubject({ searchValue }, { schoolYear })
+        const result = await SubjectModel.searchSubject({ searchValue }, { schoolYear, majors })
         res.status(200).json({
           status: 200,
           result
