@@ -29,10 +29,9 @@ class SubjectModel {
   }
 
   async searchSubject(searchInfo, docInfo) {
-    searchInfo.searchValue = searchInfo.searchValue.toLowerCase()
     const collNameRoot = docInfo.schoolYear.toLowerCase() + "_" + process.env.MCMAJORS
     const collNameMajors = docInfo.schoolYear.toLowerCase() + "_" + docInfo.majors.toLowerCase()
-    const remakeSearchValue = removeAccents(searchInfo.searchValue)
+    const remakeSearchValue = removeAccents(searchInfo.searchValue.toLowerCase())
     const ModelRoot = createModel(collNameRoot, Schema.subjectSchema)
     const ModelMajors = createModel(collNameMajors, Schema.subjectSchema)
     const resultRoot = await ModelRoot.find(
