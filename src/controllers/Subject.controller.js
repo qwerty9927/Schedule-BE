@@ -15,8 +15,9 @@ class Subject {
   }
 
   async getInfoMajors(req, res, next) {
+    const {schoolYear} = req.query
     try {
-      const result = await SubjectModel.getInfoMajors()
+      const result = await SubjectModel.getInfoMajors(schoolYear)
       res.status(200).json({
         status: 200,
         result
