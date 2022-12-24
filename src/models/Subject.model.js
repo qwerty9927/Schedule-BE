@@ -18,9 +18,9 @@ class SubjectModel {
     }
   }
 
-  async getInfoMajors() {
+  async getInfoMajors(schoolYear) {
     try {
-      const Model = createModel(process.env.INFOMAJORS, Schema.infoMajors)
+      const Model = createModel(process.env.INFOMAJORS + "_" + schoolYear, Schema.infoMajors)
       const result = (await Model.find({})).map(item => item.Majors)
       return result
     } catch (err) {
