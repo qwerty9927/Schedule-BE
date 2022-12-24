@@ -32,7 +32,7 @@ class Craw {
       try {
         CrawModel.receiveData(obj, { schoolYear, majors })
         await CrawModel.createInfoCourse({ schoolYear })
-        await CrawModel.createInfoMajors({ majors })
+        await CrawModel.createInfoMajors({ majors, schoolYear })
         res.sendStatus(200)
       } catch (e) {
         next(createError.InternalServerError())
