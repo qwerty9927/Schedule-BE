@@ -28,6 +28,13 @@ class SubjectModel {
     }
   }
 
+  removeExcess(array){
+    return array.map(item => {
+      const {_id, TenMHUnsign, __v, ...remaining} = item._doc
+      return remaining
+    })
+  }
+
   async searchSubject(searchInfo, docInfo) {
     const collNameRoot = docInfo.schoolYear.toLowerCase() + "_" + process.env.MCMAJORS
     const collNameMajors = docInfo.schoolYear.toLowerCase() + "_" + docInfo.majors.toLowerCase()
@@ -58,7 +65,7 @@ class SubjectModel {
         ]
       }
     )
-    const result = [...resultMajors, ...resultRoot]
+    const result = [...this.removeExcess(resultMajors), ...this.removeExcess(resultRoot)]
     if(result.length){
       return result
     } else {
