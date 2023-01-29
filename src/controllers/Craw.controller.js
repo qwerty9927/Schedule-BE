@@ -5,8 +5,8 @@ const CrawModel = require('../models/Craw.model')
 class Craw {
   async receiveData(req, res, next) {
     const data = JSON.parse(req.body.values)
-    const { schoolYear, majors } = req.query
-    if (schoolYear && data) {
+    const { schoolYear, majors, key } = req.query
+    if (schoolYear && data && key === process.env.key) {
       const obj = data.map((item, index) => {
         return {
           MaMH: item[1],
