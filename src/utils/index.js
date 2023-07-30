@@ -1,4 +1,6 @@
-function convertDayToNumber(data) {
+const { ErrorResponse } = require("../core/error.response")
+
+const convertDayToNumber = (data) => {
   if(Array.isArray(data)){
     return data.map(item => {
       switch (item) {
@@ -34,7 +36,7 @@ function convertDayToNumber(data) {
   }
 }
 
-function convertStringToNumber(data) {
+const convertStringToNumber = (data) => {
   if(Array.isArray(data)){
     return data.map(item => {
       return parseInt(item)
@@ -44,7 +46,7 @@ function convertStringToNumber(data) {
   }
 }
 
-function createCodeCS(data) {
+const createCodeCS = (data) => {
   if(Array.isArray(data)){
     return data.map(item => {
       const symbol = item.slice(0, 1);
@@ -70,7 +72,7 @@ function createCodeCS(data) {
   }
 }
 
-function removeAccents(str) {
+const removeAccents = (str) => {
   var AccentsMap = [
     "aàảãáạăằẳẵắặâầẩẫấậ",
     "AÀẢÃÁẠĂẰẲẴẮẶÂẦẨẪẤẬ",
@@ -94,4 +96,13 @@ function removeAccents(str) {
   return str;
 }
 
-module.exports = { convertDayToNumber, convertStringToNumber, createCodeCS, removeAccents }
+const verifyInput = (input) => {
+  Object.entries(input).forEach(([key, value]) => {
+    if(!value){
+      throw new ErrorResponse(`${key} not "${value}"`)
+    }
+  })
+  return input
+}
+
+module.exports = { convertDayToNumber, convertStringToNumber, createCodeCS, removeAccents, verifyInput }

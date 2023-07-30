@@ -3,10 +3,10 @@ const majorsContructor = require("../models/majors.model")
 const subjectContructor = require("../models/Subject.model")
 const { prefixMajorsCollection, majorsDefault } = require("../constance")
 const { NotFoundRequest, ConflictRequest } = require("../core/error.response")
-const { findByKeySearch } = require("../repository/subject.repository")
+const { findByKeySearch, handleSubject } = require("../repository/subject.repository")
 
 class SubjectService {
-  async createCourse({semester}) {
+  async createCourse({ semester }) {
     const foundCourse = await courseModel.findOne({ Semester: semester })
     if (foundCourse) {
       throw new ConflictRequest("This course is exist")
@@ -14,7 +14,7 @@ class SubjectService {
     await courseModel.create({ Semester: semester })
   }
 
-  async createMajors({majors, semester}) {
+  async createMajors({ majors, semester }) {
     const majorsModel = majorsContructor(`${prefixMajorsCollection}_${semester}`)
     const foundMajors = await majorsModel.findOne({ Majors: majors })
     if (foundMajors) {
@@ -23,10 +23,11 @@ class SubjectService {
     await majorsModel.create({ Majors: majors })
   }
 
-  async createSubject({subjects, idSubject}, semester, majors) {
+  async createSubject({ subjects, idSubject }, { semester, majors }) {
+    subjects = handleSubject(subjects)
     const subjectSpecificModel = subjectContructor(`${semester}_${majors}`)
-    const foundSubjects = await subjectSpecificModel.findOne({MaMH: idSubject}).lean()
-    if(foundSubjects) {
+    const foundSubjects = await subjectSpecificModel.findOne({ MaMH: idSubject }).lean()
+    if (foundSubjects) {
       throw new ConflictRequest("This subject is exist")
     }
     await subjectSpecificModel.insertMany(subjects)
@@ -51,6 +52,15 @@ class SubjectService {
   }
 
   async findSubject({ keySearch, semester, majors }) {
+    const majorsModel = majorsContructor(`${prefixMajorsCollection}_${semester}`)
+    const foundCourse = await courseModel.findOne({ Semester: semester })
+    if(!foundCourse) {
+      throw new NotFoundRequest()
+    }
+    const foundMajors = await majorsModel.findOne({ Majors: majors })
+    if(!foundMajors) {
+      throw new NotFoundRequest()
+    }
     const subjectSpecificModel = subjectContructor(`${semester}_${majors}`)
     const subjectDefaultModel = subjectContructor(`${semester}_${majorsDefault}`)
     const foundSubjectSpecific = await findByKeySearch(subjectSpecificModel, keySearch)

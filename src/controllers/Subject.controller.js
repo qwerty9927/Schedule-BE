@@ -2,13 +2,14 @@ const createError = require('http-errors')
 const SubjectModel = require('../models/Subject.model')
 const SubjectService = require("../services/subject.service")
 const { SuccessResponse } = require('../core/success.response')
+const { verifyInput } = require('../utils')
 class Subject {
 
   async createCourse(req, res, next) {
     try {
       new SuccessResponse({
         message: "Create course success",
-        metadata: await SubjectService.createCourse(req.body)
+        metadata: await SubjectService.createCourse(verifyInput(req.body))
       }).send({ res })
     } catch (err) {
       next(err)
@@ -19,7 +20,7 @@ class Subject {
     try {
       new SuccessResponse({
         message: "Create majors success",
-        metadata: await SubjectService.createMajors(req.body)
+        metadata: await SubjectService.createMajors(verifyInput(req.body))
       }).send({ res })
     } catch (err) {
       next(err)
@@ -28,11 +29,9 @@ class Subject {
 
   async createSubject(req, res, next) {
     try {
-      const { semester, majors } = req.query
-      console.log(req.body)
       new SuccessResponse({
         message: "Create subject success",
-        metadata: await SubjectService.createSubject(req.body, semester, majors)
+        metadata: await SubjectService.createSubject(verifyInput(req.body), verifyInput(req.query))
       }).send({ res })
     } catch (err) {
       next(err)
@@ -54,7 +53,7 @@ class Subject {
     try {
       new SuccessResponse({
         message: "Get majors success",
-        metadata: await SubjectService.getAllMajors(req.query)
+        metadata: await SubjectService.getAllMajors(verifyInput(req.query))
       }).send({ res })
     } catch (err) {
       next(err)
@@ -65,7 +64,7 @@ class Subject {
     try {
       new SuccessResponse({
         message: "Search subject success",
-        metadata: await SubjectService.findSubject(req.body)
+        metadata: await SubjectService.findSubject(verifyInput(req.body))
       }).send({ res })
     } catch (err) {
       next(err)
