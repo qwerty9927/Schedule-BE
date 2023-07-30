@@ -50,6 +50,7 @@
 const express = require('express')
 const helmet = require("helmet")
 const morgan = require("morgan")
+const cors = require('cors')
 const corsConfig = require('./configs/cors.config')
 require("dotenv").config()
 const app = express()
@@ -66,7 +67,7 @@ require("./db/connect").connect()
 
 // Route
 app.get("/", (req, res, next) => res.send("Hello world"))
-app.use('/api/craw', require('./routes/craw.route'))
+app.get("/modelTest/:case", require("./test/modelTest"))
 app.use('/api/subject', require('./routes/subject.route'))
 
 // Handle error

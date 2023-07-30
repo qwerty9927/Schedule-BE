@@ -8,4 +8,4 @@ const corConfig = () => {
   return cors({origin: whiteList})
 }
 
-module.exports =  corConfig
+module.exports = corConfig

@@ -1,4 +1,4 @@
-import { ReasonPhrases, StatusCodes } from "../utils/httpStatusCode.js"
+const { ReasonPhrases, StatusCodes } = require("../utils/httpStatusCode.js")
 
 class ErrorResponse extends Error {
   constructor(message = ReasonPhrases.INTERNAL_SERVER_ERROR, statusCode = StatusCodes.INTERNAL_SERVER_ERROR, code = StatusCodes.INTERNAL_SERVER_ERROR){
@@ -32,7 +32,7 @@ class NotFoundRequest extends ErrorResponse {
   }
 }
 
-export {
+module.exports =  {
   ErrorResponse,
   ForbiddenRequest,
   ConflictRequest,

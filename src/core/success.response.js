@@ -1,4 +1,4 @@
-import { ReasonPhrases, StatusCodes } from "../utils/httpStatusCode.js"
+const { ReasonPhrases, StatusCodes } = require("../utils/httpStatusCode.js")
 
 class SuccessResponse {
   constructor({ message = ReasonPhrases.OK, statusCode = StatusCodes.OK, code = StatusCodes.OK, metadata = {} }) {
@@ -28,7 +28,7 @@ class CreatedResponse extends SuccessResponse {
   }
 }
 
-export { 
+module.exports = { 
   SuccessResponse,
   CreatedResponse
 }

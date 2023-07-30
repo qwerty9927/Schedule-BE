@@ -1,48 +1,74 @@
 const createError = require('http-errors')
 const SubjectModel = require('../models/Subject.model')
+const SubjectService = require("../services/subject.service")
+const { SuccessResponse } = require('../core/success.response')
 class Subject {
 
-  async getInfoCourse(req, res, next) {
+  async createCourse(req, res, next) {
     try {
-      const result = await SubjectModel.getInfoCourse()
-      res.status(200).json({
-        status: 200,
-        result
-      })
+      new SuccessResponse({
+        message: "Create course success",
+        metadata: await SubjectService.createCourse(req.body)
+      }).send({ res })
     } catch (err) {
       next(err)
     }
   }
 
-  async getInfoMajors(req, res, next) {
-    const {schoolYear} = req.query
+  async createMajors(req, res, next) {
     try {
-      const result = await SubjectModel.getInfoMajors(schoolYear)
-      res.status(200).json({
-        status: 200,
-        result
-      })
+      new SuccessResponse({
+        message: "Create majors success",
+        metadata: await SubjectService.createMajors(req.body)
+      }).send({ res })
+    } catch (err) {
+      next(err)
+    }
+  }
+
+  async createSubject(req, res, next) {
+    try {
+      const { semester, majors } = req.query
+      console.log(req.body)
+      new SuccessResponse({
+        message: "Create subject success",
+        metadata: await SubjectService.createSubject(req.body, semester, majors)
+      }).send({ res })
+    } catch (err) {
+      next(err)
+    }
+  }
+
+  async getAllCourse(req, res, next) {
+    try {
+      new SuccessResponse({
+        message: "Get course success",
+        metadata: await SubjectService.getAllCourse()
+      }).send({ res })
+    } catch (err) {
+      next(err)
+    }
+  }
+
+  async getAllMajors(req, res, next) {
+    try {
+      new SuccessResponse({
+        message: "Get majors success",
+        metadata: await SubjectService.getAllMajors(req.query)
+      }).send({ res })
     } catch (err) {
       next(err)
     }
   }
 
   async searchSubject(req, res, next) {
-    const {searchValue, schoolYear, majors} = req.body
-    if (searchValue && schoolYear && majors ) {
-      console.log(searchValue)
-      try {
-        const result = await SubjectModel.searchSubject({ searchValue }, { schoolYear, majors })
-        res.status(200).json({
-          status: 200,
-          result
-        })
-      } catch (err) {
-        console.log(err)
-        next(err)
-      }
-    } else {
-      next(createError.UnprocessableEntity())
+    try {
+      new SuccessResponse({
+        message: "Search subject success",
+        metadata: await SubjectService.findSubject(req.body)
+      }).send({ res })
+    } catch (err) {
+      next(err)
     }
   }
 }
