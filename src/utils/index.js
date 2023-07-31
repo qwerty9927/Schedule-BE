@@ -99,7 +99,7 @@ const removeAccents = (str) => {
 const verifyInput = (input) => {
   Object.entries(input).forEach(([key, value]) => {
     if(!value){
-      throw new ErrorResponse(`${key} not "${value}"`)
+      throw new ErrorResponse(`${key} is not "${value}"`)
     }
   })
   return input

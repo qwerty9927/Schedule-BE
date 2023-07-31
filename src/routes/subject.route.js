@@ -1,5 +1,6 @@
 const express = require('express')
-const SubjectController = require('../controllers/Subject.controller')
+const SubjectController = require('../controllers/subject.controller')
+const checkAuth = require('../auth/checkAuth')
 const router = express.Router()
 
 // Search subject
@@ -11,7 +12,8 @@ router.get('/course', SubjectController.getAllCourse)
 // Get info majors
 router.get('/majors', SubjectController.getAllMajors)
 
-// Authentication
+// Authorization
+router.use(checkAuth)
 
 // Create course
 router.put("/createCourse", SubjectController.createCourse)

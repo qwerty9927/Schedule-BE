@@ -1,6 +1,6 @@
 const {Schema, model} = require("mongoose")
-const { courseCollection } = require("../constance")
 
+const collectionName = "course"
 const courseSchema = new Schema({
   Semester: {
     type: String,
@@ -9,4 +9,4 @@ const courseSchema = new Schema({
   }
 })
 
-module.exports = model(courseCollection, courseSchema)
+module.exports = model(collectionName, courseSchema)

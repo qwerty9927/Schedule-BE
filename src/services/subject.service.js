@@ -2,12 +2,12 @@ const courseModel = require("../models/course.model")
 const majorsContructor = require("../models/majors.model")
 const subjectContructor = require("../models/Subject.model")
 const { prefixMajorsCollection, majorsDefault } = require("../constance")
-const { NotFoundRequest, ConflictRequest } = require("../core/error.response")
+const { NotFoundRequest, ConflictRequest, ErrorResponse } = require("../core/error.response")
 const { findByKeySearch, handleSubject } = require("../repository/subject.repository")
 
 class SubjectService {
   async createCourse({ semester }) {
-    const foundCourse = await courseModel.findOne({ Semester: semester })
+    const foundCourse = await courseModel.findOne({ Semester: semester }).lean()
     if (foundCourse) {
       throw new ConflictRequest("This course is exist")
     }
@@ -15,7 +15,7 @@ class SubjectService {
   }
 
   async createMajors({ majors, semester }) {
-    const majorsModel = majorsContructor(`${prefixMajorsCollection}_${semester}`)
+    const majorsModel = majorsContructor(`${prefixMajorsCollection}_${semester}`).lean()
     const foundMajors = await majorsModel.findOne({ Majors: majors })
     if (foundMajors) {
       throw new ConflictRequest("This majors is exist")
@@ -26,6 +26,14 @@ class SubjectService {
   async createSubject({ subjects, idSubject }, { semester, majors }) {
     subjects = handleSubject(subjects)
     const subjectSpecificModel = subjectContructor(`${semester}_${majors}`)
+    const majorsModel = majorsContructor(`${prefixMajorsCollection}_${semester}`)
+
+    const foundCourse = await courseModel.findOne({ Semester: semester }).lean()
+    const foundMajors = await majorsModel.findOne({ Majors: majors }).lean()
+    if(!foundCourse || !foundMajors) {
+      throw new ErrorResponse("Semester and majors are not exist")
+    }
+
     const foundSubjects = await subjectSpecificModel.findOne({ MaMH: idSubject }).lean()
     if (foundSubjects) {
       throw new ConflictRequest("This subject is exist")
