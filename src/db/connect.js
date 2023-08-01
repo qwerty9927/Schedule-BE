@@ -5,6 +5,7 @@ class Connection {
   static connection = null
   static  connect() {
     const uri = config.DB.URLDB
+    console.log(uri)
     mongoose.connect(uri, (error) => {
       if(error){
         console.log("Connect failed")
