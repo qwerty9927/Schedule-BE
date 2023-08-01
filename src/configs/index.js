@@ -18,4 +18,4 @@ const pro = {
   }
 }
 
-module.exports = { dev, pro }[process.env.NODE_ENV]
+module.exports = { dev, pro }["pro"]

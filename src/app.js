@@ -1,9 +1,9 @@
+require("dotenv").config()
 const express = require('express')
 const helmet = require("helmet")
 const morgan = require("morgan")
 const corsConfig = require('./configs/cors.config')
 const Connection = require("./db/connect")
-require("dotenv").config()
 const app = express()
 
 // MiddleWare

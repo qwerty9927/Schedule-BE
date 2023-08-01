@@ -4,7 +4,6 @@ const config = require("../configs")
 class Connection {
   static connect() {
     const uri = config.DB.URLDB
-    console.log(uri)
     mongoose.connect(uri, (error) => {
       if(error){
         console.log(error)
