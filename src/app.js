@@ -2,6 +2,7 @@ const express = require('express')
 const helmet = require("helmet")
 const morgan = require("morgan")
 const corsConfig = require('./configs/cors.config')
+const Connection = require("./db/connect")
 require("dotenv").config()
 const app = express()
 
@@ -13,7 +14,7 @@ app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 
 // Database
-require("./db/connect").connect()
+Connection.connect()
 
 // Route
 if(process.env.NODE_ENV === "dev"){
