@@ -1,5 +1,5 @@
 const express = require('express')
-const SubjectController = require('../controllers/subject.controller')
+const SubjectController = require('../controllers/Subject.controller')
 const checkAuth = require('../auth/checkAuth')
 const router = express.Router()
 

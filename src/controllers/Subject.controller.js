@@ -1,5 +1,4 @@
 const createError = require('http-errors')
-const SubjectModel = require('../models/Subject.model')
 const SubjectService = require("../services/subject.service")
 const { SuccessResponse } = require('../core/success.response')
 const { verifyInput } = require('../utils')
