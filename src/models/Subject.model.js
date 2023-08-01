@@ -54,7 +54,7 @@ const subjectSchema = new Schema({
   }
 })
 
-subjectSchema.index({"MaMH": "text", "TenMH": "text", "TenMHUnsign": "text"})
+// subjectSchema.index({"MaMH": "text", "TenMH": "text", "TenMHUnsign": "text"})
 
 const subjectContructor = (name) => {
   return model(name, subjectSchema)

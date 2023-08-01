@@ -1,14 +1,26 @@
 const { convertDayToNumber, convertStringToNumber, createCodeCS, removeAccents } = require("../utils")
 
+// Full text search
+// const findByKeySearch = async (model, keySearch) => {
+//   const regexSearch = new RegExp(keySearch)
+//   const foundAllSubject = await model.find({
+//     $text: { $search: regexSearch }
+//   })
+//   // .sort({ score: { $meta: "textScore" }, MaMH: 1 })
+//   .sort({MaMH: 1, NMH: 1})
+//   .select({_id: 0, __v: 0, TenMHUnsign: 0})
+//   .lean()
+//   return foundAllSubject
+// }
+
 const findByKeySearch = async (model, keySearch) => {
   const regexSearch = new RegExp(keySearch)
   const foundAllSubject = await model.find({
-    $text: { $search: regexSearch }
+    $or: [{ MaMH: keySearch }, { TenMH: { $regex: new RegExp(keySearch) } }, { TenMHUnsign: { $regex: new RegExp(keySearch) } }]
   })
-  // .sort({ score: { $meta: "textScore" }, MaMH: 1 })
-  .sort({MaMH: 1, NMH: 1})
-  .select({_id: 0, __v: 0, TenMHUnsign: 0})
-  .lean()
+    .sort({ MaMH: 1, NMH: 1 })
+    .select({ _id: 0, __v: 0, TenMHUnsign: 0 })
+    .lean()
   return foundAllSubject
 }
 

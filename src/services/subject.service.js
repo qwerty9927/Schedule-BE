@@ -73,7 +73,11 @@ class SubjectService {
     const subjectDefaultModel = subjectContructor(`${semester}_${majorsDefault}`)
     const foundSubjectSpecific = await findByKeySearch(subjectSpecificModel, keySearch)
     const foundSubjectDefault = await findByKeySearch(subjectDefaultModel, keySearch)
-    return foundSubjectSpecific.concat(foundSubjectDefault)
+    const result = foundSubjectSpecific.concat(foundSubjectDefault)
+    if(result.length === 0){
+      throw new NotFoundRequest()
+    }
+    return result
   }
 }
 
