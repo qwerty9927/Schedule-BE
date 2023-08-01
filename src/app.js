@@ -13,7 +13,7 @@ app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 
 // Database
-await require("./db/connect").connect()
+require("./db/connect").connect()
 
 // Route
 if(process.env.NODE_ENV === "dev"){
