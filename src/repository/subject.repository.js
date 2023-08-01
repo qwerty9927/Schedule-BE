@@ -14,9 +14,9 @@ const { convertDayToNumber, convertStringToNumber, createCodeCS, removeAccents }
 // }
 
 const findByKeySearch = async (model, keySearch) => {
-  const regexSearch = new RegExp(keySearch)
+  const regexSearch = new RegExp(removeAccents(keySearch))
   const foundAllSubject = await model.find({
-    $or: [{ MaMH: keySearch }, { TenMH: { $regex: new RegExp(keySearch) } }, { TenMHUnsign: { $regex: new RegExp(keySearch) } }]
+    $or: [{ MaMH: keySearch }, { TenMHUnsign: { $regex: regexSearch } }]
   })
     .sort({ MaMH: 1, NMH: 1 })
     .select({ _id: 0, __v: 0, TenMHUnsign: 0 })
