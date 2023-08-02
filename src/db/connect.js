@@ -4,7 +4,6 @@ const config = require("../configs")
 class Connection {
   static connect() {
     const uri = config.DB.URLDB
-    console.log(config)
     mongoose.connect(uri, (error) => {
       if(error){
         console.log(error)
@@ -13,10 +12,6 @@ class Connection {
         console.log("Connect to DB success")
       }
     })
-    // .catch((error) => {
-    //   console.log("Connect failed")
-    // })
-    // console.log("Connect to DB success")
   }
 
 }
