@@ -15,8 +15,8 @@ class SubjectService {
   }
 
   async createMajors({ majors, semester }) {
-    const majorsModel = majorsContructor(`${prefixMajorsCollection}_${semester}`).lean()
-    const foundMajors = await majorsModel.findOne({ Majors: majors })
+    const majorsModel = majorsContructor(`${prefixMajorsCollection}_${semester}`)
+    const foundMajors = await majorsModel.findOne({ Majors: majors }).lean()
     if (foundMajors) {
       throw new ConflictRequest("This majors is exist")
     }
@@ -30,7 +30,7 @@ class SubjectService {
 
     const foundCourse = await courseModel.findOne({ Semester: semester }).lean()
     const foundMajors = await majorsModel.findOne({ Majors: majors }).lean()
-    if(!foundCourse || !foundMajors) {
+    if (!foundCourse || !foundMajors) {
       throw new ErrorResponse("Semester and majors are not exist")
     }
 
@@ -55,18 +55,18 @@ class SubjectService {
 
     // Get majors from semester
     const majorsModel = majorsContructor(`${prefixMajorsCollection}_${semester}`)
-    const foundAllMajors = await majorsModel.find().select({ __v: 0, _id: 0 }).lean()
+    const foundAllMajors = await majorsModel.find({ Majors: { $ne: majorsDefault } }).select({ __v: 0, _id: 0 }).lean()
     return foundAllMajors
   }
 
   async findSubject({ keySearch, semester, majors }) {
     const majorsModel = majorsContructor(`${prefixMajorsCollection}_${semester}`)
     const foundCourse = await courseModel.findOne({ Semester: semester })
-    if(!foundCourse) {
+    if (!foundCourse) {
       throw new NotFoundRequest()
     }
     const foundMajors = await majorsModel.findOne({ Majors: majors })
-    if(!foundMajors) {
+    if (!foundMajors) {
       throw new NotFoundRequest()
     }
     const subjectSpecificModel = subjectContructor(`${semester}_${majors}`)
@@ -74,7 +74,7 @@ class SubjectService {
     const foundSubjectSpecific = await findByKeySearch(subjectSpecificModel, keySearch)
     const foundSubjectDefault = await findByKeySearch(subjectDefaultModel, keySearch)
     const result = foundSubjectSpecific.concat(foundSubjectDefault)
-    if(result.length === 0){
+    if (result.length === 0) {
       throw new NotFoundRequest()
     }
     return result
